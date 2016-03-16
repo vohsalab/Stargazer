@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Stargazer</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string-array name="tabs">
+        <item>Meet ISS</item>
+        <item>ISS Now</item>
+        <item>APOD</item>
+    </string-array>
+</resources>
