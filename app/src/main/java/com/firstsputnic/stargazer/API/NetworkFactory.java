@@ -3,7 +3,9 @@ package com.firstsputnic.stargazer.API;
 import android.support.annotation.NonNull;
 
 import com.firstsputnic.stargazer.Model.Apod;
+import com.firstsputnic.stargazer.Model.CurrentLocation;
 import com.firstsputnic.stargazer.View.APODFragment;
+import com.firstsputnic.stargazer.View.ISSNowFragment;
 
 import java.io.IOException;
 
@@ -22,8 +24,9 @@ public class NetworkFactory {
 
     private static NetworkFactory sNetworkFactory;
     private static Retrofit sRetrofitClient;
-    private static final String BASE_URL = "https://api.nasa.gov";
-    private static final String API_KEY = "sEUMYQTRAnS0eSmM4YFVcak2cipkTckjR1jssorx";
+    private static final String NASA_BASE_URL = "https://api.nasa.gov";
+    private static final String OPEN_NOTIFY_BASE_URL = "http://api.open-notify.org";
+    private static final String NASA_API_KEY = "sEUMYQTRAnS0eSmM4YFVcak2cipkTckjR1jssorx";
 
     public static NetworkFactory get() {
         if (sNetworkFactory == null) {
@@ -34,9 +37,9 @@ public class NetworkFactory {
     }
 
     public void getApod(final APODFragment fragment) {
-        Retrofit client = getRetrofitClient();
-        APODInterface service = client.create(APODInterface.class);
-        Call<Apod> call = service.getApod(API_KEY);
+        Retrofit client = getRetrofitClient(NASA_BASE_URL);
+        NetworkInterface service = client.create(NetworkInterface.class);
+        Call<Apod> call = service.getApod(NASA_API_KEY);
 
         call.enqueue(new Callback<Apod>() {
             @Override
@@ -54,10 +57,29 @@ public class NetworkFactory {
         });
     }
 
+    public void getCurrentCoords(final ISSNowFragment fragment) {
+        Retrofit client = getRetrofitClient(OPEN_NOTIFY_BASE_URL);
+        NetworkInterface service = client.create(NetworkInterface.class);
+        Call<CurrentLocation> call = service.getCurrentLocation();
+
+        call.enqueue(new Callback<CurrentLocation>() {
+            @Override
+            public void onResponse(Call<CurrentLocation> call, retrofit2.Response<CurrentLocation> response) {
+                CurrentLocation cl = response.body();
+                fragment.setMapLocation(cl.getIssPosition());
+            }
+
+            @Override
+            public void onFailure(Call<CurrentLocation> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 
     @NonNull
-    private Retrofit getRetrofitClient() {
-        if (sRetrofitClient == null) {
+    private Retrofit getRetrofitClient(String baseUrl) {
             OkHttpClient okClient = new OkHttpClient
                     .Builder().addInterceptor(new Interceptor() {
                 @Override
@@ -68,14 +90,12 @@ public class NetworkFactory {
             }).build();
 
             sRetrofitClient = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(baseUrl)
                     .client(okClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             return sRetrofitClient;
         }
-        else return sRetrofitClient;
-    }
 
 
 }

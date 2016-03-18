@@ -6,15 +6,16 @@
     tools:context=".View.ISSNowFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/iss_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="There will be map"/>
-    <TextView
+        />
+    <WebView
+        android:id="@+id/iss_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="There will be video" />
+        android:layout_weight="1"/>
 
 </LinearLayout>
