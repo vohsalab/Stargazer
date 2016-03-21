@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firstsputnik.stargazer.API.NetworkFactory;
 import com.firstsputnik.stargazer.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -140,6 +141,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void handleNewLocation(Location location) {
-        Toast.makeText(getActivity(), "Your Location is:" + location.getLongitude() + "," + location.getLatitude(), Toast.LENGTH_SHORT).show();
+        NetworkFactory.get().getMeetTimes(location.getLatitude(), location.getLongitude(), this);
     }
 }

@@ -22,7 +22,7 @@ public class IssMeetProvider extends BaseContentProvider {
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
-    public static final String AUTHORITY = "com.firstsputnic.stargazer.provider";
+    public static final String AUTHORITY = "com.firstsputnik.stargazer.Provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
     private static final int URI_TYPE_MEET = 0;

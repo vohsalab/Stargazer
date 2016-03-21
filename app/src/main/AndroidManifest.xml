@@ -20,9 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.firstsputnik.stargazer.Provider"
+            android:name=".Provider.IssMeetProvider"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCvfv8BrE3gl_55zLHB098SHJtHWyFIzPY"/>
     </application>
+    
 
 </manifest>

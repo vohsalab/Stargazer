@@ -19,7 +19,7 @@ public class ISSPasses {
     private Request request;
     @SerializedName("response")
     @Expose
-    private List<Response> response = new ArrayList<Response>();
+    private List<ISSPassesResponse> response = new ArrayList<ISSPassesResponse>();
 
     /**
      *
@@ -62,7 +62,7 @@ public class ISSPasses {
      * @return
      * The response
      */
-    public List<Response> getResponse() {
+    public List<ISSPassesResponse> getResponse() {
         return response;
     }
 
@@ -71,7 +71,7 @@ public class ISSPasses {
      * @param response
      * The response
      */
-    public void setResponse(List<Response> response) {
+    public void setResponse(List<ISSPassesResponse> response) {
         this.response = response;
     }
 
