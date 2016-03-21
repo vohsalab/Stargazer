@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.firstsputnik.stargazer.Model.Apod;
 import com.firstsputnik.stargazer.Model.CurrentLocation;
+import com.firstsputnik.stargazer.Model.ISSPasses;
 import com.firstsputnik.stargazer.View.APODFragment;
 import com.firstsputnik.stargazer.View.ISSNowFragment;
 
@@ -77,6 +78,22 @@ public class NetworkFactory {
 
     }
 
+    public void getMeetTimes(Double lat, double lon) {
+        Retrofit client = getRetrofitClient(OPEN_NOTIFY_BASE_URL);
+        NetworkInterface service = client.create(NetworkInterface.class);
+        Call<ISSPasses> call = service.getPasses(lat, lon);
+        call.enqueue(new Callback<ISSPasses>() {
+            @Override
+            public void onResponse(Call<ISSPasses> call, retrofit2.Response<ISSPasses> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ISSPasses> call, Throwable t) {
+
+            }
+        });
+    }
 
     @NonNull
     private Retrofit getRetrofitClient(String baseUrl) {

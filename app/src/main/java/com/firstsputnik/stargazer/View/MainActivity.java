@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.firstsputnik.stargazer.R;
-import com.google.android.gms.maps.MapView;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
