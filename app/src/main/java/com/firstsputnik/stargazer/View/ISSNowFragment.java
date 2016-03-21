@@ -1,4 +1,4 @@
-package com.firstsputnic.stargazer.View;
+package com.firstsputnik.stargazer.View;
 
 
 import android.content.Context;
@@ -13,15 +13,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.firstsputnic.stargazer.API.NetworkFactory;
-import com.firstsputnic.stargazer.Model.IssPosition;
-import com.firstsputnic.stargazer.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.firstsputnik.stargazer.API.NetworkFactory;
+import com.firstsputnik.stargazer.Model.IssPosition;
+import com.firstsputnik.stargazer.R;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -55,7 +49,6 @@ public class ISSNowFragment extends Fragment {
         //videoView.getSettings().setJavaScriptEnabled(true);
        // videoView.loadUrl("http://www.ustream.tv/embed/17074538");
         fragment = this;
-        //NetworkFactory.get().getCurrentCoords(this);
         r = new Runnable() {
             private long time = 0;
             @Override

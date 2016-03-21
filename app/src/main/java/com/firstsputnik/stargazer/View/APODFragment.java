@@ -1,4 +1,4 @@
-package com.firstsputnic.stargazer.View;
+package com.firstsputnik.stargazer.View;
 
 
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.firstsputnic.stargazer.API.NetworkFactory;
-import com.firstsputnic.stargazer.Model.Apod;
-import com.firstsputnic.stargazer.R;
+import com.firstsputnik.stargazer.API.NetworkFactory;
+import com.firstsputnik.stargazer.Model.Apod;
+import com.firstsputnik.stargazer.R;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

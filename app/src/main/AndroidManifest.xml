@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.firstsputnic.stargazer">
+    package="com.firstsputnik.stargazer">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +22,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCvfv8BrE3gl_55zLHB098SHJtHWyFIzPY"></meta-data>
+            android:value="AIzaSyCvfv8BrE3gl_55zLHB098SHJtHWyFIzPY"/>
     </application>
 
 </manifest>

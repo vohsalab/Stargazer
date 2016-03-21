@@ -1,4 +1,4 @@
-package com.firstsputnic.stargazer.Model;
+package com.firstsputnik.stargazer.Model;
 
 /**
  * Created by ibalashov on 3/16/2016.

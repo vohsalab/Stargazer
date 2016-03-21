@@ -1,11 +1,11 @@
-package com.firstsputnic.stargazer.API;
+package com.firstsputnik.stargazer.API;
 
 import android.support.annotation.NonNull;
 
-import com.firstsputnic.stargazer.Model.Apod;
-import com.firstsputnic.stargazer.Model.CurrentLocation;
-import com.firstsputnic.stargazer.View.APODFragment;
-import com.firstsputnic.stargazer.View.ISSNowFragment;
+import com.firstsputnik.stargazer.Model.Apod;
+import com.firstsputnik.stargazer.Model.CurrentLocation;
+import com.firstsputnik.stargazer.View.APODFragment;
+import com.firstsputnik.stargazer.View.ISSNowFragment;
 
 import java.io.IOException;
 

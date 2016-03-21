@@ -1,7 +1,8 @@
-package com.firstsputnic.stargazer.API;
+package com.firstsputnik.stargazer.API;
 
-import com.firstsputnic.stargazer.Model.Apod;
-import com.firstsputnic.stargazer.Model.CurrentLocation;
+import com.firstsputnik.stargazer.Model.Apod;
+import com.firstsputnik.stargazer.Model.CurrentLocation;
+import com.firstsputnik.stargazer.Model.ISSPasses;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -17,4 +18,7 @@ public interface NetworkInterface {
 
     @GET("/iss-now")
     Call<CurrentLocation> getCurrentLocation();
+
+    @GET("/iss-pass.json")
+    Call<ISSPasses> getPasses(@Query("lat") double latitude, @Query("lon") double longitude);
 }

@@ -1,4 +1,4 @@
-package com.firstsputnic.stargazer.View;
+package com.firstsputnik.stargazer.View;
 
 import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.firstsputnic.stargazer.R;
+import com.firstsputnik.stargazer.R;
 import com.google.android.gms.maps.MapView;
 
 import butterknife.Bind;

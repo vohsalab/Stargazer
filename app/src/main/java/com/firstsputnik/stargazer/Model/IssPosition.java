@@ -1,4 +1,4 @@
-package com.firstsputnic.stargazer.Model;
+package com.firstsputnik.stargazer.Model;
 
 
 import com.google.gson.annotations.Expose;
