@@ -42,15 +42,11 @@ public class MeetContentValues extends AbstractContentValues {
     /**
      * date and time
      */
-    public MeetContentValues putDatetime(@NonNull Date value) {
+    public MeetContentValues putDatetime(@NonNull Long value) {
         if (value == null) throw new IllegalArgumentException("datetime must not be null");
-        mContentValues.put(MeetColumns.DATETIME, value.getTime());
-        return this;
-    }
-
-
-    public MeetContentValues putDatetime(long value) {
         mContentValues.put(MeetColumns.DATETIME, value);
         return this;
     }
+
+
 }

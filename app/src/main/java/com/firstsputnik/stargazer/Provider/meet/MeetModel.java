@@ -17,5 +17,5 @@ public interface MeetModel extends BaseModel {
      * Cannot be {@code null}.
      */
     @NonNull
-    Date getDatetime();
+    long getDatetime();
 }

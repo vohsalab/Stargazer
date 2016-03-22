@@ -12,7 +12,7 @@ public class ISSPassesResponse {
     private Integer duration;
     @SerializedName("risetime")
     @Expose
-    private Integer risetime;
+    private Long risetime;
 
     /**
      *
@@ -37,7 +37,7 @@ public class ISSPassesResponse {
      * @return
      * The risetime
      */
-    public Integer getRisetime() {
+    public Long getRisetime() {
         return risetime;
     }
 
@@ -46,7 +46,7 @@ public class ISSPassesResponse {
      * @param risetime
      * The risetime
      */
-    public void setRisetime(Integer risetime) {
+    public void setRisetime(Long risetime) {
         this.risetime = risetime;
     }
 

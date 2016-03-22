@@ -108,6 +108,7 @@ public class NetworkFactory {
                     fragment.getActivity().getContentResolver().insert(MeetColumns.CONTENT_URI, values.values());
 
                 }
+                fragment.populateMeetTimesView();
             }
 
             @Override

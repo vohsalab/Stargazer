@@ -31,10 +31,10 @@ public class MeetCursor extends AbstractCursor implements MeetModel {
      * Cannot be {@code null}.
      */
     @NonNull
-    public Date getDatetime() {
-        Date res = getDateOrNull(MeetColumns.DATETIME);
+    public long getDatetime() {
+        Long res = getLongOrNull(MeetColumns.DATETIME);
         if (res == null)
             throw new NullPointerException("The value of 'datetime' in the database was null, which is not allowed according to the model definition");
-        return res;
+        return res.longValue();
     }
 }
