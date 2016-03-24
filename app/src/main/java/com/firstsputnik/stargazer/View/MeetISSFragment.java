@@ -25,6 +25,8 @@ import com.firstsputnik.stargazer.API.NetworkFactory;
 import com.firstsputnik.stargazer.Provider.meet.MeetColumns;
 import com.firstsputnik.stargazer.Provider.meet.MeetCursor;
 import com.firstsputnik.stargazer.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -53,7 +55,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     private ArrayList<Long> meetTimes = new ArrayList<>();
     @Bind(R.id.meet_times)
     ListView meetTimesView;
-
+    @Bind(R.id.meet_adview)
+    AdView mAdView;
 
     public MeetISSFragment() {
         // Required empty public constructor
@@ -86,6 +89,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_meet_is, container, false);
         ButterKnife.bind(this, v);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         populateMeetTimesView();
 
         return v;

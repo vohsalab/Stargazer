@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.firstsputnik.stargazer.API.NetworkFactory;
 import com.firstsputnik.stargazer.Model.Apod;
 import com.firstsputnik.stargazer.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -30,6 +32,8 @@ public class APODFragment extends Fragment {
     ImageView ApodImageView;
     @Bind(R.id.apod_desc)
     TextView ApodDescTextView;
+    @Bind(R.id.apod_adview)
+    AdView apodAdView;
 
     public APODFragment() {
         // Required empty public constructor
@@ -42,6 +46,8 @@ public class APODFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_apod, container, false);
         ButterKnife.bind(this, v);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        apodAdView.loadAd(adRequest);
         NetworkFactory.get().getApod(this);
         return v;
     }

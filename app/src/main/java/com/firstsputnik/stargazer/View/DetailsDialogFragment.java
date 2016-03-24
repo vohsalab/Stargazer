@@ -1,14 +1,19 @@
 package com.firstsputnik.stargazer.View;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.AlarmClock;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firstsputnik.stargazer.R;
+import com.firstsputnik.stargazer.Receiver.OneTimeAlarmReceiver;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -66,6 +72,11 @@ public class DetailsDialogFragment extends DialogFragment {
     private void setupNotification(long datetime) {
         Toast.makeText(getActivity(), "Setting up Notification for " +
                 notificationTime.get(Calendar.HOUR) + ":" + notificationTime.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getActivity().getApplicationContext(), OneTimeAlarmReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000, pi);
+        Log.d("NotificationSetup", "Alarm is set up");
     }
 
     private void setupAlarm(long datetime) {

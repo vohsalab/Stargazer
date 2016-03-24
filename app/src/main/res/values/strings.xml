@@ -13,4 +13,5 @@
     <string name="set_up_alarm_checkbox">Set up alarm instead of notification</string>
     <string name="create_notification">Create notification</string>
     <string name="detailsdialog_checkbox_text">Check to create alarm \n instead of notification</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
