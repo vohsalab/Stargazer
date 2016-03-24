@@ -95,6 +95,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         Cursor c = getActivity().getContentResolver().query(MeetColumns.CONTENT_URI,null,null,null,null);
         if (c != null && c.getCount() > 0) {
             MeetCursor mc = new MeetCursor(c);
+            meetTimes.clear();
             while (mc.moveToNext()) {
                 meetTimes.add(mc.getDatetime());
 
@@ -189,12 +190,10 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     void onItemClick(int position) {
         Bundle arguments = new Bundle();
         arguments.putLong("Date", meetTimes.get(position));
-        Fragment detailsFragment = new MeetDetailsFragment();
-        detailsFragment.setArguments(arguments);
-        final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, detailsFragment);
-        ft.addToBackStack(null);
-        ft.commit();
+        DetailsDialogFragment fragment = new DetailsDialogFragment();
+        fragment.setArguments(arguments);
+        fragment.show(getActivity().getSupportFragmentManager(), "DetailsDialog");
+
 
     }
 
