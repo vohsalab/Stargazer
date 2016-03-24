@@ -46,16 +46,13 @@ public class ISSNowFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_ssnow, container, false);
         ButterKnife.bind(this, v);
-        //videoView.getSettings().setJavaScriptEnabled(true);
-       // videoView.loadUrl("http://www.ustream.tv/embed/17074538");
+        videoView.getSettings().setJavaScriptEnabled(true);
+        videoView.loadUrl("http://www.ustream.tv/embed/17074538");
         fragment = this;
         r = new Runnable() {
-            private long time = 0;
             @Override
             public void run() {
                 NetworkFactory.get().getCurrentCoords(fragment);
-                time += 10000;
-                Log.d("TimerExample", "Going for... " + time);
                 h.postDelayed(this, 10000);
             }
         };

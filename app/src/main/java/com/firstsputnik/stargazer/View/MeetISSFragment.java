@@ -50,6 +50,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
+    private static final String PREF_LONGITUDE = "Longitude";
+    private static final String PREF_LATITUDE = "Latitude";
     GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Long> meetTimes = new ArrayList<>();
@@ -57,6 +59,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     ListView meetTimesView;
     @Bind(R.id.meet_adview)
     AdView mAdView;
+
+    private boolean isOutdated;
 
     public MeetISSFragment() {
         // Required empty public constructor
@@ -74,7 +78,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         }
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
     }
 
     @Override
@@ -102,6 +106,11 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
             MeetCursor mc = new MeetCursor(c);
             meetTimes.clear();
             while (mc.moveToNext()) {
+                if ((mc.getDatetime() * 1000) < System.currentTimeMillis()) {
+                    isOutdated = true;
+                    c.close();
+                    return;
+                }
                 meetTimes.add(mc.getDatetime());
 
             }
@@ -131,10 +140,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
                 handleNewLocation(mLastLocation);
             }
             else {
-                Toast.makeText(getActivity(), "Requesting location update", Toast.LENGTH_SHORT).show();
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
-            return;
         }
         else {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -157,7 +164,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
                 else {
                     Toast.makeText(getActivity(), "Unfortunately, this application can't work without access to location services", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
 
         }
@@ -188,7 +194,21 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void handleNewLocation(Location location) {
-        NetworkFactory.get().getMeetTimes(location.getLatitude(), location.getLongitude(), this);
+
+        boolean isChangedLocation;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        double prefLongitude = preferences.getFloat(PREF_LONGITUDE, 200);
+        double prefLatitude = preferences.getFloat(PREF_LATITUDE, 200);
+        isChangedLocation = (((Math.abs(prefLatitude) - Math.abs(location.getLatitude())) > 0.5) ||
+                ((Math.abs(prefLongitude) - Math.abs(location.getLongitude())) > 0.5));
+        if (isOutdated || isChangedLocation) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putFloat(PREF_LONGITUDE, (float) location.getLongitude());
+            editor.putFloat(PREF_LATITUDE, (float) location.getLatitude());
+            editor.apply();
+
+            NetworkFactory.get().getMeetTimes(location.getLatitude(), location.getLongitude(), this);
+        }
     }
 
     @OnItemClick(R.id.meet_times)
@@ -208,7 +228,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         Iterator<Long> iterator = longs.iterator();
         for (int i = 0; i < ret.length; i++)
         {
-            ret[i] = iterator.next().longValue();
+            ret[i] = iterator.next();
         }
         return ret;
     }
