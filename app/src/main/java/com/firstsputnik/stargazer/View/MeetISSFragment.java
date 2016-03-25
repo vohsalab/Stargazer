@@ -1,6 +1,5 @@
 package com.firstsputnik.stargazer.View;
 
-
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,10 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +47,12 @@ import butterknife.OnItemClick;
  * A simple {@link Fragment} subclass.
  */
 public class MeetISSFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 1;
     private static final String PREF_LONGITUDE = "Longitude";
     private static final String PREF_LATITUDE = "Latitude";
+    public static final int MEET_ISS_ID = 1;
     GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Long> meetTimes = new ArrayList<>();
@@ -95,37 +96,15 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         ButterKnife.bind(this, v);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        populateMeetTimesView();
+        getLoaderManager().initLoader(MEET_ISS_ID, null, this);
+        //populateMeetTimesView();
 
         return v;
     }
 
     public void populateMeetTimesView() {
-        Cursor c = getActivity().getContentResolver().query(MeetColumns.CONTENT_URI,null,null,null,null);
-        if (c != null && c.getCount() > 0) {
-            MeetCursor mc = new MeetCursor(c);
-            meetTimes.clear();
-            while (mc.moveToNext()) {
-                if ((mc.getDatetime() * 1000) < System.currentTimeMillis()) {
-                    isOutdated = true;
-                    c.close();
-                    return;
-                }
-                meetTimes.add(mc.getDatetime());
 
-            }
-            Long[] items = convertLongs(meetTimes);
-            Date[] dates = new Date[items.length];
-            for (int i =0; i < items.length; i++) {
-                dates[i] = new Date(items[i] * 1000);
-            }
-            ArrayAdapter<Date> adapter = new ArrayAdapter<>(
-                    getActivity().getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    dates);
-            meetTimesView.setAdapter(adapter);
-            c.close();
-        }
+        getLoaderManager().restartLoader(MEET_ISS_ID, null, this);
     }
 
     @Override
@@ -237,5 +216,51 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(
+                this.getActivity(),
+                MeetColumns.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+        }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.getCount() > 0) {
+            MeetCursor mc = new MeetCursor(data);
+            meetTimes.clear();
+            while (mc.moveToNext()) {
+                if ((mc.getDatetime() * 1000) < System.currentTimeMillis()) {
+                    isOutdated = true;
+                    mc.close();
+                    return;
+                }
+                meetTimes.add(mc.getDatetime());
+
+            }
+            Long[] items = convertLongs(meetTimes);
+            Date[] dates = new Date[items.length];
+            for (int i = 0; i < items.length; i++) {
+                dates[i] = new Date(items[i] * 1000);
+            }
+            ArrayAdapter<Date> adapter = new ArrayAdapter<>(
+                    getActivity().getApplicationContext(),
+                    android.R.layout.simple_list_item_1,
+                    dates);
+            meetTimesView.setAdapter(adapter);
+            mc.close();
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
