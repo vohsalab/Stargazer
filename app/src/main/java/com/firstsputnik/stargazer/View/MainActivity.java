@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private int fragmentId;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -36,12 +37,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fragment fragment = new MeetISSFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
         ButterKnife.bind(this);
+
+        //else fragmentId = 0;
         mTitle = mDrawerTitle = getTitle();
         mTabNames = getResources().getStringArray(R.array.tabs);
         mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, mTabNames));
@@ -66,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        if(savedInstanceState==null)
+        {
+            fragmentId = 0;
+            selectItem(fragmentId);
+        }
     }
 
     @Override
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new MeetISSFragment();
                 break;
             case 1:
-                fragment = new ISSNowFragment();
+                fragment = new ISSNowMapFragment();
                 break;
             case 2:
                 fragment = new APODFragment();
@@ -127,6 +130,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("FragmentID", fragmentId);
+    }
 }
 
 

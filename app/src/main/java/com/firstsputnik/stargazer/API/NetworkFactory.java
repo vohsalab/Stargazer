@@ -1,20 +1,17 @@
 package com.firstsputnik.stargazer.API;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.firstsputnik.stargazer.Model.Apod;
 import com.firstsputnik.stargazer.Model.CurrentLocation;
 import com.firstsputnik.stargazer.Model.ISSPasses;
 import com.firstsputnik.stargazer.Model.ISSPassesResponse;
-import com.firstsputnik.stargazer.Provider.ISSMeetSQLiteOpenHelper;
 import com.firstsputnik.stargazer.Provider.meet.MeetColumns;
 import com.firstsputnik.stargazer.Provider.meet.MeetContentValues;
-import com.firstsputnik.stargazer.Provider.meet.MeetCursor;
 import com.firstsputnik.stargazer.Provider.meet.MeetSelection;
 import com.firstsputnik.stargazer.View.APODFragment;
-import com.firstsputnik.stargazer.View.ISSNowFragment;
+import com.firstsputnik.stargazer.View.ISSNowMapFragment;
 import com.firstsputnik.stargazer.View.MeetISSFragment;
 
 import java.io.IOException;
@@ -68,7 +65,7 @@ public class NetworkFactory {
         });
     }
 
-    public void getCurrentCoords(final ISSNowFragment fragment) {
+    public void getCurrentCoords(final ISSNowMapFragment fragment) {
         Retrofit client = getRetrofitClient(OPEN_NOTIFY_BASE_URL);
         NetworkInterface service = client.create(NetworkInterface.class);
         Call<CurrentLocation> call = service.getCurrentLocation();
