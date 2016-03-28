@@ -33,7 +33,17 @@
         <receiver
             android:name=".Receiver.OneTimeAlarmReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
+        <receiver android:name=".Widget.ISSAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/issapp_widget_info" />
+        </receiver>
+        <service android:name=".Widget.ISSWidgetIntentService"/>
     </application>
 
 </manifest>
