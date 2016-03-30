@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/meet_iss_item"
+            android:checked="false"
+            android:title="@string/meet_iss"/>
+        <item android:id="@+id/iss_now_item"
+            android:checked="false"
+            android:title="@string/iss_now"/>
+        <item android:id="@+id/apod_item"
+            android:checked="false"
+            android:title="@string/apod"/>
+    </group>
+</menu>

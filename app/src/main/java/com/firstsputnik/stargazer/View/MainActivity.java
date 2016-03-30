@@ -1,13 +1,17 @@
 package com.firstsputnik.stargazer.View;
 
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,39 +26,40 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] mTabNames;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
     private int fragmentId;
+
 
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @Bind(R.id.left_drawer)
-    ListView mDrawerList;
+    @Bind(R.id.nav_view)
+    NavigationView mNavView;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        /*final ActionBar actionBar = getSupportActionBar();
 
-        //else fragmentId = 0;
-        mTitle = mDrawerTitle = getTitle();
-        mTabNames = getResources().getStringArray(R.array.tabs);
-        mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, mTabNames));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }*/
+        mNavView.setNavigationItemSelectedListener(new DrawerItemClickListener());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                new Toolbar(this), R.string.drawer_open, R.string.drawer_close) {
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely closed state. */
+
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
 
 
             }
 
-            /** Called when a drawer has settled in a completely open state. */
+
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
@@ -62,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
         if(savedInstanceState==null)
         {
-            fragmentId = 0;
-            selectItem(fragmentId);
+            Menu menu = mNavView.getMenu();
+            fragmentId = R.id.meet_iss_item;
+            selectItem(menu.findItem(fragmentId));
         }
     }
 
@@ -75,45 +80,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+//        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+       // mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    private class DrawerItemClickListener implements NavigationView.OnNavigationItemSelectedListener {
+
         @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
+        public boolean onNavigationItemSelected(MenuItem item) {
+            selectItem(item);
+            return true;
         }
     }
-    private void selectItem(int position) {
+    private void selectItem(MenuItem position) {
         //Toast.makeText(this, "Position:" + position, Toast.LENGTH_SHORT).show();
         Fragment fragment;
-        switch (position) {
-            case 0:
+        switch (position.getItemId()) {
+            case R.id.meet_iss_item:
                 fragment = new MeetISSFragment();
+                mDrawerLayout.closeDrawers();
                 break;
-            case 1:
+            case R.id.iss_now_item:
                 fragment = new ISSNowMapFragment();
+                mDrawerLayout.closeDrawers();
                 break;
-            case 2:
+            case R.id.apod_item:
                 fragment = new APODFragment();
+                mDrawerLayout.closeDrawers();
                 break;
             default:
                 fragment = new MeetISSFragment();
@@ -121,13 +130,10 @@ public class MainActivity extends AppCompatActivity {
         }
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
-                .replace(R.id.content_frame, fragment)
+                .replace(R.id.content_main_frame, fragment)
                 .commit();
 
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        getSupportActionBar().setTitle(mTabNames[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+
     }
 
     @Override
