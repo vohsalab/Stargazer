@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class ISSNowMapFragment extends Fragment implements OnMapReadyCallback{
     @Bind(R.id.iss_map2)
     MapView mapView;
 
+
     private GoogleMap map = null;
 
     ISSNowMapFragment fragment;
@@ -73,6 +75,8 @@ public class ISSNowMapFragment extends Fragment implements OnMapReadyCallback{
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_issnow, container, false);
         ButterKnife.bind(this, v);
+        AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBar);
+        appBarLayout.setExpanded(false);
         videoView.getSettings().setJavaScriptEnabled(true);
         videoView.loadUrl("http://www.ustream.tv/embed/17074538");
         fragment = this;

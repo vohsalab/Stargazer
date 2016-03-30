@@ -38,9 +38,9 @@ public class DetailsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         datetime = arguments.getLong("Date");
-        Date meetDate = new Date(datetime * 1000);
+        Date meetDate = new Date(datetime);
         notificationTime = Calendar.getInstance();
-        notificationTime.setTimeInMillis(datetime* 1000 - 900000);
+        notificationTime.setTimeInMillis(datetime - 900000);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.fragment_details_dialog, null);

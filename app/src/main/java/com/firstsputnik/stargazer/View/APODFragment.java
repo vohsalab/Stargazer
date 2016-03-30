@@ -4,6 +4,7 @@ package com.firstsputnik.stargazer.View;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,8 @@ public class APODFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_apod, container, false);
         ButterKnife.bind(this, v);
+        AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBar);
+        appBarLayout.setExpanded(true);
         AdRequest adRequest = new AdRequest.Builder().build();
         apodAdView.loadAd(adRequest);
         NetworkFactory.get().getApod(this);

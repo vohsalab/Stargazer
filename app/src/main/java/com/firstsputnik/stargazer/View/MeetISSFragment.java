@@ -9,16 +9,21 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firstsputnik.stargazer.API.NetworkFactory;
@@ -53,11 +58,14 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     private static final String PREF_LONGITUDE = "Longitude";
     private static final String PREF_LATITUDE = "Latitude";
     public static final int MEET_ISS_ID = 1;
+
     GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Long> meetTimes = new ArrayList<>();
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Bind(R.id.meet_times)
-    ListView meetTimesView;
+    RecyclerView meetTimesView;
     @Bind(R.id.meet_adview)
     AdView mAdView;
 
@@ -94,8 +102,14 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_meet_is, container, false);
         ButterKnife.bind(this, v);
+        AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBar);
+        appBarLayout.setExpanded(true);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        meetTimesView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        meetTimesView.setLayoutManager(mLayoutManager);
         getLoaderManager().initLoader(MEET_ISS_ID, null, this);
         //populateMeetTimesView();
 
@@ -190,17 +204,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
-    @OnItemClick(R.id.meet_times)
-    void onItemClick(int position) {
-        Bundle arguments = new Bundle();
-        arguments.putLong("Date", meetTimes.get(position));
-        DetailsDialogFragment fragment = new DetailsDialogFragment();
-        fragment.setArguments(arguments);
-        fragment.show(getActivity().getSupportFragmentManager(), "DetailsDialog");
-
-
-    }
-
     public static Long[] convertLongs(List<Long> longs)
     {
         Long[] ret = new Long[longs.size()];
@@ -245,15 +248,12 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
             }
             Long[] items = convertLongs(meetTimes);
-            Date[] dates = new Date[items.length];
+            String[] dates = new String[items.length];
             for (int i = 0; i < items.length; i++) {
-                dates[i] = new Date(items[i] * 1000);
+                dates[i] = (new Date(items[i] * 1000)).toString();
             }
-            ArrayAdapter<Date> adapter = new ArrayAdapter<>(
-                    getActivity().getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    dates);
-            meetTimesView.setAdapter(adapter);
+            MeetAdapter meetAdapter = new MeetAdapter(dates);
+            meetTimesView.setAdapter(meetAdapter);
             mc.close();
 
         }
@@ -261,6 +261,68 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    private class MeetAdapter extends RecyclerView.Adapter<MeetAdapter.ViewHolder> {
+        private String[] mDataset;
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            // each data item is just a string in this case
+            public CardView mCardView;
+            public ViewHolder(CardView v) {
+                super(v);
+                mCardView = v;
+                mCardView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                Bundle arguments = new Bundle();
+                TextView tv = (TextView) v.findViewById(R.id.rv_item_text);
+                String dateText = tv.getText().toString();
+                Long datetime = Date.parse(dateText);
+                arguments.putLong("Date", datetime);
+                DetailsDialogFragment fragment = new DetailsDialogFragment();
+                fragment.setArguments(arguments);
+                fragment.show(getActivity().getSupportFragmentManager(), "DetailsDialog");
+            }
+        }
+
+        // Provide a suitable constructor (depends on the kind of dataset)
+        public MeetAdapter(String[] myDataset) {
+            mDataset = myDataset;
+        }
+
+
+        @Override
+        public MeetAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                         int viewType) {
+            // create a new view
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.meet_text_view, parent, false);
+            ViewHolder vh = new ViewHolder((CardView) v);
+            return vh;
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            View v = holder.mCardView;
+            TextView tv = (TextView) v.findViewById(R.id.rv_item_text);
+            tv.setText(mDataset[position]);
+
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return mDataset.length;
+        }
+
 
     }
 }
