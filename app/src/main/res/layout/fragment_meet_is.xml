@@ -1,15 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#E3F2FD"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your next ISS fly-bys will be at:"
-        android:gravity="center_horizontal"/>
+        android:text="@string/rv_label"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/meet_times"
         android:scrollbars="vertical"

@@ -21,8 +21,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,12 +43,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
+
 public class MeetISSFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -62,7 +58,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private ArrayList<Long> meetTimes = new ArrayList<>();
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Bind(R.id.meet_times)
     RecyclerView meetTimesView;
@@ -99,7 +94,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_meet_is, container, false);
         ButterKnife.bind(this, v);
         AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBar);
@@ -107,17 +101,14 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         meetTimesView.setHasFixedSize(true);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         meetTimesView.setLayoutManager(mLayoutManager);
         getLoaderManager().initLoader(MEET_ISS_ID, null, this);
-        //populateMeetTimesView();
 
         return v;
     }
 
     public void populateMeetTimesView() {
-
         getLoaderManager().restartLoader(MEET_ISS_ID, null, this);
     }
 
@@ -245,7 +236,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
                     return;
                 }
                 meetTimes.add(mc.getDatetime());
-
             }
             Long[] items = convertLongs(meetTimes);
             String[] dates = new String[items.length];
@@ -267,11 +257,9 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     private class MeetAdapter extends RecyclerView.Adapter<MeetAdapter.ViewHolder> {
         private String[] mDataset;
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
+
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            // each data item is just a string in this case
+
             public CardView mCardView;
             public ViewHolder(CardView v) {
                 super(v);
@@ -292,7 +280,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
             }
         }
 
-        // Provide a suitable constructor (depends on the kind of dataset)
+
         public MeetAdapter(String[] myDataset) {
             mDataset = myDataset;
         }
@@ -304,8 +292,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.meet_text_view, parent, false);
-            ViewHolder vh = new ViewHolder((CardView) v);
-            return vh;
+            return new ViewHolder((CardView) v);
         }
 
         // Replace the contents of a view (invoked by the layout manager)
@@ -317,7 +304,6 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
             return mDataset.length;

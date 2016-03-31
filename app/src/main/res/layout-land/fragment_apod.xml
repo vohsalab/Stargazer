@@ -17,12 +17,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <TextView
-            android:id="@+id/apod_desc"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/apod_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Hello APOD Fragment"
+                />
 
-            tools:text="Hello APOD Fragment" />
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/apod_adview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id"/>
+
+
+        </LinearLayout>
     </ScrollView>
 
 

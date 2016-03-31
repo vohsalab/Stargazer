@@ -19,4 +19,5 @@
     <string name="meet_iss">Meet ISS</string>
     <string name="iss_now">ISS now</string>
     <string name="apod">Picture of the Day</string>
+    <string name="rv_label">Your next ISS fly-bys will be at:</string>
 </resources>
