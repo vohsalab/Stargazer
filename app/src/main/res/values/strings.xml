@@ -20,4 +20,5 @@
     <string name="iss_now">ISS now</string>
     <string name="apod">Picture of the Day</string>
     <string name="rv_label">Your next ISS fly-bys will be at:</string>
+    <string name="welcome_to_stargazer">Welcome to Stargazer!</string>
 </resources>
