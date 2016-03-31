@@ -37,14 +37,12 @@ public class APODFragment extends Fragment {
     AdView apodAdView;
 
     public APODFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_apod, container, false);
         ButterKnife.bind(this, v);
         AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBar);

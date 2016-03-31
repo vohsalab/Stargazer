@@ -16,9 +16,7 @@ import com.firstsputnik.stargazer.View.MainActivity;
 
 import java.util.Date;
 
-/**
- * Created by ibalashov on 3/27/2016.
- */
+
 public class ISSWidgetIntentService extends IntentService {
 
 
@@ -56,10 +54,10 @@ public class ISSWidgetIntentService extends IntentService {
             int layoutId = R.layout.issapp_widget;
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
             if (nextMeet.equals("")) {
-                views.setTextViewText(R.id.appwidget_text, "No ISS data");
+                views.setTextViewText(R.id.appwidget_text, getString(R.string.no_iss_data));
             }
             else  {
-                views.setTextViewText(R.id.appwidget_text, "Next ISS flyover is on:\n" + nextMeet);
+                views.setTextViewText(R.id.appwidget_text, getString(R.string.widget_next_flyover) + nextMeet);
             }
             Intent launchIntent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);

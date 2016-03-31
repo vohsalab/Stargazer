@@ -42,7 +42,7 @@ public class DetailsDialogFragment extends DialogFragment {
         final CheckBox cb = (CheckBox) v.findViewById(R.id.alarm_checkbox);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(v)
-                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dd_button_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (cb.isChecked()) {
@@ -52,7 +52,7 @@ public class DetailsDialogFragment extends DialogFragment {
 
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dd_button_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DetailsDialogFragment.this.getDialog().cancel();

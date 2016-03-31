@@ -2,6 +2,7 @@ package com.firstsputnik.stargazer.API;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.firstsputnik.stargazer.Model.Apod;
 import com.firstsputnik.stargazer.Model.CurrentLocation;
@@ -10,6 +11,7 @@ import com.firstsputnik.stargazer.Model.ISSPassesResponse;
 import com.firstsputnik.stargazer.Provider.meet.MeetColumns;
 import com.firstsputnik.stargazer.Provider.meet.MeetContentValues;
 import com.firstsputnik.stargazer.Provider.meet.MeetSelection;
+import com.firstsputnik.stargazer.R;
 import com.firstsputnik.stargazer.View.APODFragment;
 import com.firstsputnik.stargazer.View.ISSNowMapFragment;
 import com.firstsputnik.stargazer.View.MeetISSFragment;
@@ -25,13 +27,9 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by ibalashov on 3/17/2016.
- */
 public class NetworkFactory {
 
     private static NetworkFactory sNetworkFactory;
-    private static Retrofit sRetrofitClient;
     private static final String NASA_BASE_URL = "https://api.nasa.gov";
     private static final String OPEN_NOTIFY_BASE_URL = "http://api.open-notify.org";
     private static final String NASA_API_KEY = "sEUMYQTRAnS0eSmM4YFVcak2cipkTckjR1jssorx";
@@ -61,6 +59,8 @@ public class NetworkFactory {
             @Override
             public void onFailure(Call<Apod> call, Throwable t) {
 
+                Toast.makeText(fragment.getActivity(), R.string.apod_network_error, Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -80,6 +80,8 @@ public class NetworkFactory {
             @Override
             public void onFailure(Call<CurrentLocation> call, Throwable t) {
 
+                Toast.makeText(fragment.getActivity(), R.string.current_pos_netwoek_error, Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -98,6 +100,7 @@ public class NetworkFactory {
                 if (c != null && c.getCount() > 0) {
                     MeetSelection ms = new MeetSelection();
                     ms.delete(fragment.getActivity().getContentResolver());
+                    c.close();
                 }
                 for (ISSPassesResponse meet: meets) {
                     MeetContentValues values = new MeetContentValues();
@@ -105,11 +108,14 @@ public class NetworkFactory {
                     fragment.getActivity().getContentResolver().insert(MeetColumns.CONTENT_URI, values.values());
 
                 }
+
                 fragment.populateMeetTimesView();
             }
 
             @Override
             public void onFailure(Call<ISSPasses> call, Throwable t) {
+
+                Toast.makeText(fragment.getActivity(), R.string.meet_times_network_error, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -121,17 +127,15 @@ public class NetworkFactory {
                     .Builder().addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
-                    Response response = chain.proceed(chain.request());
-                    return response;
+                    return chain.proceed(chain.request());
                 }
             }).build();
 
-            sRetrofitClient = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .client(okClient)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            return sRetrofitClient;
+        return new Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(okClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
         }
 
 

@@ -19,6 +19,17 @@
     <string name="meet_iss">Meet ISS</string>
     <string name="iss_now">ISS now</string>
     <string name="apod">Picture of the Day</string>
-    <string name="rv_label">Your next ISS fly-bys will be at:</string>
+    <string name="rv_label">Your next ISS fly-bys will be at:\n (Tap on the time to set up a notification)</string>
     <string name="welcome_to_stargazer">Welcome to Stargazer!</string>
+    <string name="notif_header">ISS will be over you in 15 mins!</string>
+    <string name="notif_text">Time to take a look at the sky!</string>
+    <string name="meet_times_network_error">Unable to retrieve meet times</string>
+    <string name="current_pos_netwoek_error">Unable to retrieve current position</string>
+    <string name="apod_network_error">Unable to retrieve picture and description, please, try again later</string>
+    <string name="dd_button_ok">Create</string>
+    <string name="dd_button_cancel">Cancel</string>
+    <string name="no_location_access">Unfortunately, this application can\'t work without access to location services</string>
+    <string name="loc_connection_fail">Connection to location services failed, Please try again later</string>
+    <string name="no_iss_data">No ISS data</string>
+    <string name="widget_next_flyover">Next ISS flyover is on:\n</string>
 </resources>

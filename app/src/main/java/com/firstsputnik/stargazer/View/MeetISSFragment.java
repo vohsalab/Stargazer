@@ -86,6 +86,12 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        populateMeetTimesView();
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
@@ -100,12 +106,19 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
         appBarLayout.setExpanded(true);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        meetTimesView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         meetTimesView.setLayoutManager(mLayoutManager);
         getLoaderManager().initLoader(MEET_ISS_ID, null, this);
 
+
+
         return v;
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
     }
 
     public void populateMeetTimesView() {
@@ -114,8 +127,10 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        boolean afl = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        boolean acl = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean afl = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean acl = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (afl && acl) {
 
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
@@ -124,7 +139,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
                 handleNewLocation(mLastLocation);
             }
             else {
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                        mLocationRequest, this);
             }
         }
         else {
@@ -138,7 +154,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
                 if (grantResults.length > 0
@@ -146,7 +163,8 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
                     onConnected(null);
                 }
                 else {
-                    Toast.makeText(getActivity(), "Unfortunately, this application can't work without access to location services", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),
+                            R.string.no_location_access, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -160,7 +178,7 @@ public class MeetISSFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getActivity(), "Connection to location services failed, Please try again later", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.loc_connection_fail, Toast.LENGTH_SHORT).show();
     }
 
     @Override
