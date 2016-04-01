@@ -1,11 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'udacity_key'
+            keyPassword '413467'
+            storeFile file('keystore/udacity_capstone_key.jks')
+            storePassword '413467'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "24.0.0 rc1"
-
     defaultConfig {
-        applicationId "com.firstsputnic.stargazer"
+        applicationId "com.firstsputnik.stargazer"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -15,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
